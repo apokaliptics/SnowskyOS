@@ -1,0 +1,4 @@
+# Override the firmware's embedded target — the simulator runs on the host.
+# The sim crate uses std and does not need build-std.
+[build]
+target = "x86_64-pc-windows-msvc"

@@ -1,0 +1,17 @@
+[package]
+name = "echo-mini-sim"
+version = "0.1.0"
+edition = "2021"
+description = "Desktop simulator for SnowskyOS — renders the cassette UI in a native window"
+
+# This crate is a standalone std binary.  It does NOT depend on the no_std
+# firmware crate; instead it replicates the UI drawing code using the same
+# embedded-graphics primitives so the visual output is pixel-identical.
+
+[dependencies]
+# Window / pixel buffer
+minifb = "0.27"
+
+# Same graphics stack as the real firmware
+embedded-graphics = "0.8"
+embedded-graphics-core = "0.4"
