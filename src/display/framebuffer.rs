@@ -31,12 +31,12 @@ pub struct FrameBuffer;
 impl FrameBuffer {
     /// Get a mutable byte slice of the entire framebuffer.
     pub fn as_mut_bytes() -> &'static mut [u8] {
-        unsafe { &mut FB_DATA }
+        unsafe { &mut *(&raw mut FB_DATA) }
     }
 
     /// Get a read-only byte slice of the framebuffer.
     pub fn as_bytes() -> &'static [u8] {
-        unsafe { &FB_DATA }
+        unsafe { &*(&raw const FB_DATA) }
     }
 
     /// Set a single pixel (x, y) to an RGB565 colour.
@@ -66,7 +66,7 @@ impl FrameBuffer {
     /// Fill the entire framebuffer with a single colour.
     pub fn fill(color: u16) {
         let bytes = color.to_le_bytes();
-        let fb = unsafe { &mut FB_DATA };
+        let fb = unsafe { &mut *(&raw mut FB_DATA) };
         for chunk in fb.chunks_exact_mut(2) {
             chunk[0] = bytes[0];
             chunk[1] = bytes[1];
@@ -85,7 +85,7 @@ impl FrameBuffer {
     /// Flush the entire framebuffer to the LCD via DMA-backed SPI.
     /// This is non-blocking — returns immediately after starting DMA.
     pub fn flush_dma() {
-        let src = unsafe { FB_DATA.as_ptr() as usize };
+        let src = (&raw const FB_DATA) as *const u8 as usize;
         let dst = spi::data_register_addr();
 
         dma::setup_single(

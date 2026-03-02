@@ -79,14 +79,14 @@ pub fn init() {
         LLI_A.dst_addr = i2s_dr;
         LLI_A.size     = transfer_count;
         LLI_A.control  = ctl;
-        LLI_A.next_lli = &LLI_B as *const _ as u32;
+        LLI_A.next_lli = (&raw const LLI_B) as *const _ as u32;
 
         // LLI B → plays half-B, chains back to A
         LLI_B.src_addr = buf.half_b_phys() as u32;
         LLI_B.dst_addr = i2s_dr;
         LLI_B.size     = transfer_count;
         LLI_B.control  = ctl;
-        LLI_B.next_lli = &LLI_A as *const _ as u32;
+        LLI_B.next_lli = (&raw const LLI_A) as *const _ as u32;
     }
 
     // ── Register the DMA IRQ handler ────────────────────────────────────
@@ -95,7 +95,7 @@ pub fn init() {
 
 /// Start playback: kick the DMA linked-list ring and enable I2S TX.
 pub fn start() {
-    let lli_a_addr = unsafe { &LLI_A as *const _ as usize };
+    let lli_a_addr = (&raw const LLI_A) as *const _ as usize;
     dma::start_linked(dma::CH_AUDIO, lli_a_addr, dma::HS_I2S0_TX);
     i2s::start_tx();
     PLAYING.store(true, Ordering::Release);

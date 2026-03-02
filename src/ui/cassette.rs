@@ -12,7 +12,7 @@
 // is non-blocking.
 // ═══════════════════════════════════════════════════════════════════════════════
 
-use crate::display::framebuffer::{self, FrameBuffer, WIDTH, HEIGHT};
+use crate::display::framebuffer::{self, FrameBuffer, WIDTH};
 use crate::display::lcd;
 use crate::input::buttons::ButtonEvent;
 use crate::audio::engine;
@@ -27,10 +27,12 @@ use embedded_graphics::text::Text;
 // ── Colour palette (warm retro cassette tones) ──────────────────────────────
 use embedded_graphics::pixelcolor::Rgb565;
 
+#[allow(dead_code)]
 const BG: Rgb565        = Rgb565::new(3, 3, 4);       // near-black
 const AMBER: Rgb565     = Rgb565::new(31, 23, 0);     // warm amber
 const DIM_AMBER: Rgb565 = Rgb565::new(16, 12, 0);     // dimmed amber
 const REEL_COLOR: Rgb565 = Rgb565::new(20, 16, 4);    // cassette reel brown
+#[allow(dead_code)]
 const WHITE: Rgb565     = Rgb565::new(31, 63, 31);    // bright white
 const DARK_GRAY: Rgb565 = Rgb565::new(8, 16, 8);      // subtle separator
 
@@ -44,6 +46,7 @@ const TITLE_Y: i32 = 140;
 const ARTIST_Y: i32 = 158;
 const PROGRESS_Y: i32 = 190;
 const PROGRESS_H: u32 = 4;
+#[allow(dead_code)]
 const TIME_Y: i32 = 204;
 const STATUS_Y: i32 = 240;
 const VOLUME_Y: i32 = 270;
@@ -123,7 +126,7 @@ pub fn draw_idle_screen() {
 
 /// Handle a button press and update the UI.
 pub fn handle_input(event: ButtonEvent) {
-    let state = unsafe { &mut UI_STATE };
+    let state = unsafe { &mut *(&raw mut UI_STATE) };
 
     match event {
         ButtonEvent::Play => {
@@ -173,7 +176,7 @@ pub fn handle_input(event: ButtonEvent) {
 /// Full redraw (called only when `dirty` — minimises CPU usage).
 fn redraw() {
     let mut fb = FrameBuffer;
-    let state = unsafe { &UI_STATE };
+    let state = unsafe { &*(&raw const UI_STATE) };
 
     FrameBuffer::fill(framebuffer::COLOR_DARK_BG);
 
@@ -189,8 +192,9 @@ fn redraw() {
     // ── Reels (animated angle if playing) ───────────────────────────────
     let angle = if state.playing {
         unsafe {
-            UI_STATE.reel_angle = (UI_STATE.reel_angle + 15) % 360;
-            UI_STATE.reel_angle
+            let p = &raw mut UI_STATE;
+            (*p).reel_angle = ((*p).reel_angle + 15) % 360;
+            (*p).reel_angle
         }
     } else {
         0

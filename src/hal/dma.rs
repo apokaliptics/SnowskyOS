@@ -7,6 +7,7 @@
 // Double-buffer scheme:
 //   CPU fills Buffer A while DMA streams Buffer B to I2S (then swap).
 // ═══════════════════════════════════════════════════════════════════════════════
+#![allow(dead_code)]
 use crate::hal::mmio::{self, DMA_BASE};
 use core::sync::atomic::{AtomicBool, Ordering};
 

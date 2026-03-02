@@ -2,6 +2,7 @@
 // hal/spi.rs — SPI master driver for Rockchip RKNanoD
 // Used to drive the 1.99" IPS LCD (170×320) via 8080-style SPI.
 // ═══════════════════════════════════════════════════════════════════════════════
+#![allow(dead_code)]
 use crate::hal::mmio::{self, SPI0_BASE};
 
 // ── SPI register offsets (RKNanoD SPI master) ───────────────────────────────

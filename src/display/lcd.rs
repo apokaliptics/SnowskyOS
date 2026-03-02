@@ -15,6 +15,7 @@ const LCD_BL_BANK: usize  = 1; // Backlight enable
 const LCD_BL_PIN: u8      = 3;
 
 // ── ST7789V command set (common IPS controller) ─────────────────────────────
+#[allow(dead_code)]
 mod cmd {
     pub const SWRESET: u8  = 0x01; // Software reset
     pub const SLPOUT: u8   = 0x11; // Sleep out

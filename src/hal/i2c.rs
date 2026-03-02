@@ -4,6 +4,7 @@
 //
 // The RKNanoD uses a DesignWare-compatible I2C controller.
 // ═══════════════════════════════════════════════════════════════════════════════
+#![allow(dead_code)]
 use crate::hal::mmio;
 
 /// I2C controller register offsets (DesignWare I2C on RKNanoD).

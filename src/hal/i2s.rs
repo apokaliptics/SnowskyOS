@@ -5,6 +5,7 @@
 // Configured for 32-bit width for bit-perfect transparency even with 16-bit
 // source material (zero-padded in hardware — no digital manipulation).
 // ═══════════════════════════════════════════════════════════════════════════════
+#![allow(dead_code)]
 use crate::hal::mmio::{self, I2S0_BASE};
 
 // ── I2S register offsets (RKNanoD I2S master) ───────────────────────────────

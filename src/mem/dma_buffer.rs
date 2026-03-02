@@ -112,10 +112,10 @@ impl DmaRingBuffer {
 /// The caller must ensure exclusive mutable access is properly synchronised
 /// (only one writer at a time — guaranteed by the double-buffer protocol).
 pub unsafe fn audio_buffer() -> &'static mut DmaRingBuffer {
-    &mut DMA_AUDIO_BUF
+    &mut *(&raw mut DMA_AUDIO_BUF)
 }
 
 /// Physical address of the entire buffer (for DMA descriptor `src_addr`).
 pub fn audio_buffer_phys() -> usize {
-    unsafe { DMA_AUDIO_BUF.data.as_ptr() as usize }
+    (&raw const DMA_AUDIO_BUF) as *const u8 as usize
 }

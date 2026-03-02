@@ -41,6 +41,7 @@ const PLL_LOCK:   u32 = 1 << 0;
 /// PLL power-down bit in CRU_PLL_CON1 (1 = powered down)
 const PLL_PD:     u32 = 1 << 13;
 /// Integer mode (disable fractional divider) in CRU_PLL_CON1
+#[allow(dead_code)]
 const PLL_DSMPD:  u32 = 1 << 12;
 
 /// Audio clock family selector.

@@ -98,6 +98,7 @@ fn main() -> ! {
 // ═════════════════════════════════════════════════════════════════════════════
 
 /// HardFault handler — in release we just spin.
+#[allow(non_snake_case)]
 #[exception]
 unsafe fn HardFault(_frame: &cortex_m_rt::ExceptionFrame) -> ! {
     loop {
@@ -106,6 +107,7 @@ unsafe fn HardFault(_frame: &cortex_m_rt::ExceptionFrame) -> ! {
 }
 
 /// DefaultHandler — catches any unregistered interrupt.
+#[allow(non_snake_case)]
 #[exception]
 unsafe fn DefaultHandler(_irqn: i16) {
     // Unhandled interrupt — ignore
