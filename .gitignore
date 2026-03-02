@@ -1,0 +1,16 @@
+# Build artifacts
+/target/
+/D:/rust-os-build/
+
+# Cargo lock (binary crate — include it; uncomment below if library-only)
+# Cargo.lock
+
+# IDE / editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS junk
+Thumbs.db
+.DS_Store

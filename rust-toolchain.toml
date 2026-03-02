@@ -1,0 +1,6 @@
+# ─── Toolchain override for Echo Mini OS ──────────────────────────────────────
+# Requires nightly for: build-std, alloc_error_handler, inline asm
+[toolchain]
+channel = "nightly"
+components = ["rust-src"]
+targets = ["thumbv7m-none-eabi"]

@@ -1,0 +1,17 @@
+# ─── Cargo build configuration for Rockchip RKNanoD (Dual Cortex-M3) ──────────
+#
+# Target: thumbv7m-none-eabi (ARMv7-M, no FPU)
+# Linker: rust-lld with cortex-m-rt memory.x + custom linker.ld
+
+[build]
+target = "thumbv7m-none-eabi"
+
+[target.thumbv7m-none-eabi]
+rustflags = [
+    "-C", "link-arg=-Tlink.x",
+    "-C", "link-arg=-Tlinker.ld",
+]
+
+[unstable]
+build-std = ["core", "alloc"]
+build-std-features = ["compiler-builtins-mem"]

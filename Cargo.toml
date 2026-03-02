@@ -1,0 +1,70 @@
+[package]
+name = "echo-mini-os"
+version = "0.2.0"
+edition = "2021"
+authors = ["Echo Mini OS Team"]
+description = "Bare-metal Rust OS for FiiO Snowsky Echo Mini DAP — Rockchip RKNanoD (Dual Cortex-M3)"
+
+[lib]
+name = "echo_mini_os"
+path = "src/lib.rs"
+
+[[bin]]
+name = "echo-mini-os"
+path = "src/main.rs"
+
+# ─── Dependencies ──────────────────────────────────────────────────────────────
+[dependencies]
+# ARM Cortex-M core support (register access, intrinsics, NVIC)
+cortex-m = "0.7"
+
+# Cortex-M runtime (vector table, #[entry], #[exception])
+cortex-m-rt = "0.7"
+
+# Core embedded traits (HAL abstraction)
+embedded-hal = "1.0"
+
+# Embedded graphics for the retro cassette UI
+embedded-graphics = "0.8"
+embedded-graphics-core = "0.4"
+
+# Volatile register access — no UB, no reordering
+volatile-register = "0.2"
+
+# Bitflags for clean register definitions
+bitflags = "2.5"
+
+# Spin-based synchronization (no_std mutex/rwlock)
+spin = "0.9"
+
+# Critical section implementation (cortex-m backend)
+# restore-state-u8: PRIMASK is a single-bit register; u8 is sufficient to
+# carry the saved interrupt state through acquire/release.
+critical-section = { version = "1.1", features = ["restore-state-u8"] }
+
+# Byte-order helpers for I2S/I2C payloads
+byteorder = { version = "1.5", default-features = false }
+
+# Static assertions for compile-time layout checks
+static_assertions = "1.1"
+
+# Heapless collections for no_std ring buffers
+heapless = "0.8"
+
+[dev-dependencies]
+
+[features]
+default = ["soc-rknano-d"]
+soc-rknano-d = []
+
+# ─── Profile: release is tuned for the embedded target ────────────────────────
+[profile.dev]
+panic = "abort"
+opt-level = 1
+
+[profile.release]
+panic = "abort"
+opt-level = "z"          # Smallest binary
+lto = true               # Link-time optimisation across the entire crate graph
+codegen-units = 1        # Single CU for maximum optimisation
+strip = "symbols"        # Strip debug symbols from the final .bin
